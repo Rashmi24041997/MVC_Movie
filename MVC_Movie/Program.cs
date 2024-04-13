@@ -1,9 +1,25 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MVC_Movie.Data;
+using MVC_Movie.Models;
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<MVC_MovieContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MVC_MovieContext") ?? throw new InvalidOperationException("Connection string 'MVC_MovieContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    SeedData.Initialize(services);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -22,6 +38,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{name?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

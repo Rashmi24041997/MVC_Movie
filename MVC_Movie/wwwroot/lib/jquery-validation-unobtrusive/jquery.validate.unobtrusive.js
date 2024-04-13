@@ -25,34 +25,34 @@
         adapters,
         data_validation = "unobtrusiveValidation";
 
-    function setValidationValues(options, ruleName, value) {
+    function setValidationValues (options, ruleName, value) {
         options.rules[ruleName] = value;
         if (options.message) {
             options.messages[ruleName] = options.message;
         }
     }
 
-    function splitAndTrim(value) {
+    function splitAndTrim (value) {
         return value.replace(/^\s+|\s+$/g, "").split(/\s*,\s*/g);
     }
 
-    function escapeAttributeValue(value) {
+    function escapeAttributeValue (value) {
         // As mentioned on http://api.jquery.com/category/selectors/
         return value.replace(/([!"#$%&'()*+,./:;<=>?@\[\\\]^`{|}~])/g, "\\$1");
     }
 
-    function getModelPrefix(fieldName) {
+    function getModelPrefix (fieldName) {
         return fieldName.substr(0, fieldName.lastIndexOf(".") + 1);
     }
 
-    function appendModelPrefix(value, prefix) {
+    function appendModelPrefix (value, prefix) {
         if (value.indexOf("*.") === 0) {
             value = value.replace("*.", prefix);
         }
         return value;
     }
 
-    function onError(error, inputElement) {  // 'this' is the form element
+    function onError (error, inputElement) {  // 'this' is the form element
         var container = $(this).find("[data-valmsg-for='" + escapeAttributeValue(inputElement[0].name) + "']"),
             replaceAttrValue = container.attr("data-valmsg-replace"),
             replace = replaceAttrValue ? $.parseJSON(replaceAttrValue) !== false : null;
@@ -69,7 +69,7 @@
         }
     }
 
-    function onErrors(event, validator) {  // 'this' is the form element
+    function onErrors (event, validator) {  // 'this' is the form element
         var container = $(this).find("[data-valmsg-summary=true]"),
             list = container.find("ul");
 
@@ -83,7 +83,7 @@
         }
     }
 
-    function onSuccess(error) {  // 'this' is the form element
+    function onSuccess (error) {  // 'this' is the form element
         var container = error.data("unobtrusiveContainer");
 
         if (container) {
@@ -99,7 +99,7 @@
         }
     }
 
-    function onReset(event) {  // 'this' is the form element
+    function onReset (event) {  // 'this' is the form element
         var $form = $(this),
             key = '__jquery_unobtrusive_validation_form_reset';
         if ($form.data(key)) {
@@ -124,7 +124,7 @@
             .removeData("unobtrusiveContainer");
     }
 
-    function validationInfo(form) {
+    function validationInfo (form) {
         var $form = $(form),
             result = $form.data(data_validation),
             onResetProxy = $.proxy(onReset, form),
